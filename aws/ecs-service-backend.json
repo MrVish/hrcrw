@@ -1,0 +1,57 @@
+{
+    "serviceName": "hrcrw-backend-service",
+    "cluster": "hrcrw-cluster",
+    "taskDefinition": "hrcrw-backend",
+    "desiredCount": 2,
+    "launchType": "FARGATE",
+    "platformVersion": "LATEST",
+    "networkConfiguration": {
+        "awsvpcConfiguration": {
+            "subnets": [
+                "subnet-PRIVATE_SUBNET_1",
+                "subnet-PRIVATE_SUBNET_2"
+            ],
+            "securityGroups": [
+                "sg-BACKEND_SECURITY_GROUP"
+            ],
+            "assignPublicIp": "DISABLED"
+        }
+    },
+    "loadBalancers": [
+        {
+            "targetGroupArn": "arn:aws:elasticloadbalancing:REGION:ACCOUNT_ID:targetgroup/hrcrw-backend-tg/TARGET_GROUP_ID",
+            "containerName": "hrcrw-backend",
+            "containerPort": 8000
+        }
+    ],
+    "serviceRegistries": [
+        {
+            "registryArn": "arn:aws:servicediscovery:REGION:ACCOUNT_ID:service/srv-BACKEND_SERVICE_ID",
+            "containerName": "hrcrw-backend"
+        }
+    ],
+    "deploymentConfiguration": {
+        "maximumPercent": 200,
+        "minimumHealthyPercent": 50,
+        "deploymentCircuitBreaker": {
+            "enable": true,
+            "rollback": true
+        }
+    },
+    "enableExecuteCommand": true,
+    "enableLogging": true,
+    "tags": [
+        {
+            "key": "Environment",
+            "value": "production"
+        },
+        {
+            "key": "Application",
+            "value": "hrcrw"
+        },
+        {
+            "key": "Component",
+            "value": "backend"
+        }
+    ]
+}

@@ -1,0 +1,226 @@
+.kyc-response-display {
+    @apply bg-white border border-gray-200 rounded-lg;
+}
+
+.response-header {
+    @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+}
+
+.response-title {
+    @apply text-lg font-semibold text-gray-900 mb-2;
+}
+
+.response-meta {
+    @apply flex items-center gap-4 text-sm text-gray-600;
+}
+
+.completion-status {
+    @apply flex items-center gap-1;
+}
+
+.timestamp {
+    @apply flex items-center gap-1;
+}
+
+.response-content {
+    @apply p-6;
+}
+
+.questions-list {
+    @apply space-y-4;
+}
+
+/* Question Styles */
+.kyc-question {
+    @apply border rounded-lg p-4 transition-all duration-200;
+}
+
+.kyc-question.success {
+    @apply border-green-200 bg-green-50;
+}
+
+.kyc-question.warning {
+    @apply border-orange-200 bg-orange-50;
+}
+
+.kyc-question.error {
+    @apply border-red-200 bg-red-50;
+}
+
+.kyc-question.info {
+    @apply border-blue-200 bg-blue-50;
+}
+
+.kyc-question.conditional {
+    @apply border-l-4 border-l-blue-500;
+}
+
+.question-header {
+    @apply flex items-start gap-4 mb-3;
+}
+
+.question-number {
+    @apply flex-shrink-0 flex items-center gap-2;
+}
+
+.question-number .number {
+    @apply w-8 h-8 bg-white border-2 border-current rounded-full flex items-center justify-center text-sm font-semibold;
+}
+
+.conditional-badge {
+    @apply px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full border border-blue-200;
+}
+
+.question-text {
+    @apply flex-1;
+}
+
+.question-text h4 {
+    @apply font-medium text-gray-900 mb-1;
+}
+
+.condition-description {
+    @apply flex items-center gap-1 text-xs text-blue-600 mt-1;
+}
+
+.answer-status {
+    @apply flex-shrink-0;
+}
+
+.question-answer {
+    @apply ml-12;
+}
+
+/* Answer Type Styles */
+.text-answer .answer-text {
+    @apply text-gray-800 leading-relaxed;
+}
+
+.text-answer .no-answer {
+    @apply text-gray-500 italic;
+}
+
+.dropdown-answer .answer-value {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.kyc-question.success .dropdown-answer .answer-value {
+    @apply bg-green-100 text-green-800;
+}
+
+.kyc-question.error .dropdown-answer .answer-value {
+    @apply bg-red-100 text-red-800;
+}
+
+.kyc-question.info .dropdown-answer .answer-value {
+    @apply bg-gray-100 text-gray-800;
+}
+
+.kyc-question.warning .dropdown-answer .answer-value {
+    @apply bg-orange-100 text-orange-800;
+}
+
+/* Document Answer Styles */
+.document-answer {
+    @apply space-y-2;
+}
+
+.document-count {
+    @apply text-sm font-medium text-gray-700;
+}
+
+.no-documents {
+    @apply text-sm text-gray-500 italic;
+}
+
+.document-items {
+    @apply space-y-2 mt-2;
+}
+
+.document-item {
+    @apply flex items-center gap-2 p-2 bg-white border border-gray-200 rounded text-sm;
+}
+
+.document-name {
+    @apply flex-1 text-gray-700;
+}
+
+.document-link {
+    @apply text-blue-600 hover:text-blue-800 transition-colors;
+}
+
+/* Additional Evidence */
+.additional-evidence {
+    @apply mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg;
+}
+
+.evidence-title {
+    @apply flex items-center gap-2 text-sm font-medium text-blue-900 mb-2;
+}
+
+.evidence-content p {
+    @apply text-sm text-blue-800 leading-relaxed;
+}
+
+/* Summary Section */
+.response-summary {
+    @apply mt-6 pt-6 border-t border-gray-200;
+}
+
+.summary-stats {
+    @apply flex items-center gap-6;
+}
+
+.stat-item {
+    @apply flex items-center gap-2 text-sm;
+}
+
+.stat-item.success {
+    @apply text-green-700;
+}
+
+.stat-item.error {
+    @apply text-red-700;
+}
+
+.stat-item.warning {
+    @apply text-orange-700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .response-header {
+        @apply px-4 py-3;
+    }
+
+    .response-content {
+        @apply p-4;
+    }
+
+    .question-header {
+        @apply flex-col gap-2;
+    }
+
+    .question-answer {
+        @apply ml-0 mt-2;
+    }
+
+    .summary-stats {
+        @apply flex-col items-start gap-2;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .kyc-response-display {
+        @apply shadow-none border-gray-400;
+    }
+
+    .response-header {
+        @apply bg-white;
+    }
+
+    .kyc-question {
+        @apply break-inside-avoid;
+    }
+}

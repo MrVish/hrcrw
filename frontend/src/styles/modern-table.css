@@ -1,0 +1,934 @@
+/* Modern Table System - Clean and Properly Structured */
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+/* Base Table Container */
+.modern-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Table Header */
+.modern-table-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.modern-table-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.modern-table-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Filters and Search */
+.modern-table-filters {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+    flex-shrink: 0;
+}
+
+.modern-table-quick-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.modern-table-filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.modern-table-filter-btn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.modern-table-filter-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.modern-table-search {
+    position: relative;
+    max-width: 400px;
+}
+
+.modern-table-search input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    outline: none;
+}
+
+.modern-table-search input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modern-table-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+/* Table Wrapper - This is crucial for proper scrolling */
+.modern-table-wrapper {
+    flex: 1;
+    overflow: auto;
+    background: white;
+    position: relative;
+}
+
+/* Modern Table - Fixed Layout for Consistent Columns */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 900px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Table Headers - Sticky and Properly Sized */
+.modern-table th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Optimized Column Widths for Better Space Usage */
+.modern-table th:nth-child(1) {
+    width: 90px;
+}
+
+/* ID - Compact */
+.modern-table th:nth-child(2) {
+    width: 220px;
+}
+
+/* Client - More space */
+.modern-table th:nth-child(3) {
+    width: 130px;
+}
+
+/* Status */
+.modern-table th:nth-child(4) {
+    width: 90px;
+}
+
+/* Docs - Compact */
+.modern-table th:nth-child(5) {
+    width: 150px;
+}
+
+/* Submitted By */
+.modern-table th:nth-child(6) {
+    width: 110px;
+}
+
+/* Created */
+.modern-table th:nth-child(7) {
+    width: 110px;
+}
+
+/* Updated */
+.modern-table th:nth-child(8) {
+    width: 100px;
+}
+
+/* Actions */
+
+/* Table Cells - Consistent Padding and Alignment */
+.modern-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    font-size: 0.875rem;
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Table Rows - Hover Effects */
+.modern-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.modern-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Cell Content Containers - Proper Alignment */
+.table-cell-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 20px;
+    width: 100%;
+}
+
+.table-cell-content.center {
+    justify-content: center;
+}
+
+.table-cell-content.start {
+    justify-content: flex-start;
+}
+
+/* ID Cell - Clean and Compact */
+.table-id {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+/* Client Cell - Two-line Layout */
+.table-client {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.table-client-name {
+    font-weight: 500;
+    color: #111827;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-client-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table-client-id {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.table-risk-badge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.table-risk-badge.high {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.table-risk-badge.medium {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.table-risk-badge.low {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+/* Status Badge - Compact with Icon */
+.table-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.table-status.draft {
+    background: #f8fafc;
+    color: #64748b;
+}
+
+.table-status.submitted {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.table-status.under-review {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.table-status.approved {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.table-status.rejected {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* Document Count - Compact */
+.table-docs {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+/* User Info - With Icon */
+.table-user {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #374151;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Date Info - Compact */
+.table-date {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+/* Action Buttons - Centered and Visible */
+.table-actions {
+    display: flex !important;
+    gap: 0.25rem;
+    justify-content: center;
+    align-items: center;
+    min-width: 80px;
+    height: 100%;
+}
+
+.table-action-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #f8fafc;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.table-action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-action-btn.view {
+    color: #3b82f6;
+    background: #eff6ff;
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.table-action-btn.view:hover {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.table-action-btn.edit {
+    color: #f59e0b;
+    background: #fffbeb;
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.table-action-btn.edit:hover {
+    background: #f59e0b;
+    color: white;
+    border-color: #f59e0b;
+}
+
+/* Empty State */
+.modern-table-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.modern-table-empty-icon {
+    width: 48px;
+    height: 48px;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.modern-table-empty h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.modern-table-empty p {
+    margin: 0 0 1.5rem 0;
+    font-size: 0.875rem;
+}
+
+/* Pagination */
+.modern-table-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.modern-table-pagination button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    color: #374151;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modern-table-pagination button:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.modern-table-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modern-table-pagination-info {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.btn--primary {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.btn--primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.btn--secondary {
+    background: white;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.btn--secondary:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.btn--secondary.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+
+    .modern-table th:nth-child(6),
+    .modern-table td:nth-child(6) {
+        display: none;
+        /* Hide Created column */
+    }
+
+    .modern-table {
+        min-width: 800px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .modern-table-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .modern-table-filters {
+        padding: 1rem;
+    }
+
+    .modern-table th:nth-child(4),
+    .modern-table td:nth-child(4),
+    .modern-table th:nth-child(5),
+    .modern-table td:nth-child(5) {
+        display: none;
+        /* Hide Documents and Submitted By columns */
+    }
+
+    .modern-table {
+        min-width: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .modern-table th:nth-child(7),
+    .modern-table td:nth-child(7) {
+        display: none;
+        /* Hide Updated column */
+    }
+
+    .modern-table th,
+    .modern-table td {
+        padding: 0.75rem 1rem;
+    }
+
+    .modern-table {
+        min-width: 500px;
+    }
+}
+
+/* Fix for table alignment issues */
+.modern-table-container .modern-table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.modern-table-container .modern-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.modern-table-container .modern-table th,
+.modern-table-container .modern-table td {
+    border: none;
+    margin: 0;
+    padding: 1rem 1.5rem;
+}
+
+.modern-table-container .modern-table th:first-child,
+.modern-table-container .modern-table td:first-child {
+    padding-left: 1.5rem;
+}
+
+.modern-table-container .modern-table th:last-child,
+.modern-table-container .modern-table td:last-child {
+    padding-right: 1.5rem;
+}
+
+/* 
+Override any conflicting styles from App.css */
+.modern-table-container {
+    /* Reset any inherited styles */
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.modern-table-container .modern-table {
+    /* Ensure table uses our layout */
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.modern-table-container .modern-table th,
+.modern-table-container .modern-table td {
+    /* Reset any inherited cell styles */
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+}
+
+/* Ensure the first column (ID) displays properly */
+.modern-table-container .modern-table th:first-child,
+.modern-table-container .modern-table td:first-child {
+    text-align: left !important;
+    padding-left: 1.5rem !important;
+}
+
+/* Fix any layout container issues */
+.modern-table-container .modern-table-wrapper {
+    position: relative !important;
+    overflow: auto !important;
+    flex: 1 !important;
+}
+
+/* Ensure proper cell content alignment */
+.modern-table-container .table-cell-content {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 20px !important;
+}
+
+.modern-table-container .table-cell-content.start {
+    justify-content: flex-start !important;
+}
+
+/* Make sure the ID badge displays correctly */
+.modern-table-container .table-id {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+
+
+/* E
+xception-specific styles */
+.table-status.high {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.table-status.medium {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.table-status.low {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.table-status.open {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.table-status.in-progress {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.table-status.resolved {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.table-status.closed {
+    background: #f8fafc;
+    color: #64748b;
+}
+
+/* Ensure action buttons are always visible */
+.modern-table-container .table-actions {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.modern-table-container .table-action-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+}
+
+/* Fix any potential z-index issues */
+.modern-table-container .table-actions,
+.modern-table-container .table-action-btn {
+    z-index: 1;
+    position: relative;
+}
+
+/* Ensure buttons are clickable */
+.modern-table-container .table-action-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Client
+ Status Color Coding */
+.table-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.table-status.active {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.table-status.under-review {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.table-status.inactive {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.table-status.suspended {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Exception Status Color Coding */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-badge.status-open {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.status-badge.status-in-progress {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.status-badge.status-resolved {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.status-badge.status-closed {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.status-badge.status-escalated {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Priority Color Coding */
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.priority-badge.priority-low {
+    background: #f0f9ff;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.priority-badge.priority-medium {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.priority-badge.priority-high {
+    background: #fed7aa;
+    color: #c2410c;
+    border: 1px solid #fdba74;
+}
+
+.priority-badge.priority-critical {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Review 
+Status Color Coding */
+.table-status.draft {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.table-status.submitted {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.table-status.under-review {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.table-status.approved {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.table-status.rejected {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Review status in client detail */
+.review-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.review-status.review-draft {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.review-status.review-submitted {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.review-status.review-under-review {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.review-status.review-approved {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.review-status.review-rejected {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}

@@ -1,0 +1,186 @@
+.error-display {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    color: #721c24;
+    margin-bottom: 1rem;
+}
+
+.error-display__content {
+    padding: 1rem;
+}
+
+.error-display__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.error-display__icon {
+    flex-shrink: 0;
+    color: #dc3545;
+    margin-top: 0.125rem;
+}
+
+.error-display__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.error-display__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    color: #721c24;
+}
+
+.error-display__message {
+    font-size: 0.875rem;
+    margin: 0;
+    line-height: 1.4;
+    color: #721c24;
+}
+
+.error-display__dismiss {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #721c24;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
+.error-display__dismiss:hover {
+    background-color: rgba(114, 28, 36, 0.1);
+}
+
+.error-display__actions {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.error-display__action {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dc3545;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #dc3545;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.error-display__action:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.error-display__action--primary {
+    background-color: #dc3545;
+    color: white;
+}
+
+.error-display__action--primary:hover {
+    background-color: #c82333;
+}
+
+/* Variants for different error types */
+.error-display--warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+.error-display--warning .error-display__title,
+.error-display--warning .error-display__message,
+.error-display--warning .error-display__dismiss {
+    color: #856404;
+}
+
+.error-display--warning .error-display__icon {
+    color: #ffc107;
+}
+
+.error-display--warning .error-display__action {
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.error-display--warning .error-display__action:hover {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.error-display--info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.error-display--info .error-display__title,
+.error-display--info .error-display__message,
+.error-display--info .error-display__dismiss {
+    color: #0c5460;
+}
+
+.error-display--info .error-display__icon {
+    color: #17a2b8;
+}
+
+.error-display--info .error-display__action {
+    border-color: #17a2b8;
+    color: #0c5460;
+}
+
+.error-display--info .error-display__action:hover {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* Compact variant */
+.error-display--compact {
+    margin-bottom: 0.5rem;
+}
+
+.error-display--compact .error-display__content {
+    padding: 0.75rem;
+}
+
+.error-display--compact .error-display__title {
+    font-size: 0.875rem;
+}
+
+.error-display--compact .error-display__message {
+    font-size: 0.8125rem;
+}
+
+/* Inline variant */
+.error-display--inline {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.error-display--inline .error-display__content {
+    padding: 0.5rem 0.75rem;
+}
+
+.error-display--inline .error-display__header {
+    gap: 0.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .error-display__actions {
+        flex-direction: column;
+    }
+
+    .error-display__action {
+        width: 100%;
+        text-align: center;
+    }
+}

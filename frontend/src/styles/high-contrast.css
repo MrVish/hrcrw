@@ -1,0 +1,353 @@
+/* High Contrast Mode Support for Detail Components */
+
+/* Base high contrast styles */
+@media (prefers-contrast: high) {
+
+    /* Ensure all interactive elements have visible borders */
+    button,
+    input,
+    select,
+    textarea,
+    .MuiButton-root,
+    .MuiTextField-root,
+    .MuiSelect-root,
+    .MuiChip-root,
+    .MuiCard-root,
+    .MuiTab-root {
+        border: 2px solid !important;
+        border-color: currentColor !important;
+    }
+
+    /* Enhance focus indicators */
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus,
+    .MuiButton-root:focus,
+    .MuiTextField-root:focus-within,
+    .MuiSelect-root:focus-within,
+    .MuiTab-root:focus {
+        outline: 3px solid !important;
+        outline-color: currentColor !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Status badges with high contrast */
+    .MuiChip-root {
+        background-color: transparent !important;
+        color: currentColor !important;
+        border: 2px solid currentColor !important;
+    }
+
+    /* Cards with high contrast */
+    .MuiCard-root {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 2px solid CanvasText !important;
+    }
+
+    /* Buttons with high contrast */
+    .MuiButton-contained {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        border: 2px solid ButtonText !important;
+    }
+
+    .MuiButton-outlined {
+        background-color: transparent !important;
+        color: currentColor !important;
+        border: 2px solid currentColor !important;
+    }
+
+    /* Tabs with high contrast */
+    .MuiTabs-indicator {
+        background-color: currentColor !important;
+        height: 4px !important;
+    }
+
+    .MuiTab-root.Mui-selected {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+    }
+
+    /* Form elements with high contrast */
+    .MuiTextField-root .MuiOutlinedInput-root {
+        background-color: Field !important;
+        color: FieldText !important;
+    }
+
+    .MuiTextField-root .MuiOutlinedInput-notchedOutline {
+        border-color: FieldText !important;
+        border-width: 2px !important;
+    }
+
+    /* Error states with high contrast */
+    .MuiTextField-root.Mui-error .MuiOutlinedInput-notchedOutline {
+        border-color: red !important;
+        border-width: 3px !important;
+    }
+
+    /* Success states with high contrast */
+    .MuiAlert-standardSuccess {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 2px solid green !important;
+    }
+
+    .MuiAlert-standardError {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 2px solid red !important;
+    }
+
+    /* Loading states with high contrast */
+    .MuiCircularProgress-root {
+        color: currentColor !important;
+    }
+
+    /* Skeleton loaders with high contrast */
+    .MuiSkeleton-root {
+        background-color: GrayText !important;
+        opacity: 0.3 !important;
+    }
+
+    /* Gradient backgrounds removed in high contrast */
+    [style*="gradient"] {
+        background: ButtonFace !important;
+        color: ButtonText !important;
+    }
+
+    /* Header sections with high contrast */
+    .detail-header {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        border: 2px solid ButtonText !important;
+    }
+
+    /* Ensure text contrast */
+    .MuiTypography-root {
+        color: CanvasText !important;
+    }
+
+    /* Badge content with high contrast */
+    .MuiBadge-badge {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        border: 1px solid HighlightText !important;
+    }
+
+    /* Icon buttons with high contrast */
+    .MuiIconButton-root {
+        color: currentColor !important;
+        border: 2px solid transparent !important;
+    }
+
+    .MuiIconButton-root:hover,
+    .MuiIconButton-root:focus {
+        border-color: currentColor !important;
+        background-color: Highlight !important;
+        color: HighlightText !important;
+    }
+
+    /* Table elements with high contrast */
+    .MuiTable-root {
+        border: 2px solid CanvasText !important;
+    }
+
+    .MuiTableCell-root {
+        border-bottom: 1px solid CanvasText !important;
+        color: CanvasText !important;
+    }
+
+    .MuiTableHead-root .MuiTableCell-root {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        font-weight: bold !important;
+    }
+
+    /* Breadcrumb with high contrast */
+    .MuiBreadcrumbs-root {
+        color: CanvasText !important;
+    }
+
+    .MuiBreadcrumbs-separator {
+        color: CanvasText !important;
+    }
+
+    /* Link elements with high contrast */
+    a,
+    .MuiLink-root {
+        color: LinkText !important;
+        text-decoration: underline !important;
+    }
+
+    a:visited,
+    .MuiLink-root:visited {
+        color: VisitedText !important;
+    }
+
+    a:hover,
+    a:focus,
+    .MuiLink-root:hover,
+    .MuiLink-root:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        outline: 2px solid HighlightText !important;
+    }
+}
+
+/* Windows High Contrast Mode specific styles */
+@media screen and (-ms-high-contrast: active) {
+
+    /* Use system colors for Windows High Contrast */
+    .MuiCard-root {
+        background-color: Window !important;
+        color: WindowText !important;
+        border: 2px solid WindowText !important;
+    }
+
+    .MuiButton-contained {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        border: 2px solid ButtonText !important;
+    }
+
+    .MuiButton-outlined {
+        background-color: Window !important;
+        color: WindowText !important;
+        border: 2px solid WindowText !important;
+    }
+
+    .MuiTextField-root .MuiOutlinedInput-root {
+        background-color: Window !important;
+        color: WindowText !important;
+    }
+
+    .MuiTextField-root .MuiOutlinedInput-notchedOutline {
+        border-color: WindowText !important;
+    }
+
+    /* Focus indicators for Windows High Contrast */
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus,
+    .MuiButton-root:focus,
+    .MuiTextField-root:focus-within {
+        outline: 2px solid WindowText !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/* Forced colors mode (modern browsers) */
+@media (forced-colors: active) {
+
+    /* Use system colors in forced colors mode */
+    .MuiCard-root {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 1px solid CanvasText !important;
+        forced-color-adjust: none;
+    }
+
+    .MuiButton-root {
+        forced-color-adjust: none;
+    }
+
+    .MuiButton-contained {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        border: 1px solid ButtonText !important;
+    }
+
+    .MuiButton-outlined {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 1px solid CanvasText !important;
+    }
+
+    /* Remove custom gradients and shadows */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        background-image: none !important;
+    }
+
+    /* Ensure focus is visible */
+    :focus {
+        outline: 2px solid Highlight !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Status indicators with forced colors */
+    .MuiChip-root {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 1px solid CanvasText !important;
+        forced-color-adjust: none;
+    }
+
+    /* Selected states */
+    .Mui-selected,
+    [aria-selected="true"] {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        forced-color-adjust: none;
+    }
+
+    /* Disabled states */
+    .Mui-disabled,
+    [disabled] {
+        color: GrayText !important;
+        border-color: GrayText !important;
+        forced-color-adjust: none;
+    }
+}
+
+/* Additional accessibility enhancements */
+.high-contrast-focus {
+    outline: 3px solid !important;
+    outline-color: currentColor !important;
+    outline-offset: 2px !important;
+}
+
+.high-contrast-border {
+    border: 2px solid currentColor !important;
+}
+
+.high-contrast-text {
+    color: CanvasText !important;
+}
+
+.high-contrast-background {
+    background-color: Canvas !important;
+}
+
+/* Skip link enhancements for high contrast */
+@media (prefers-contrast: high) {
+    .skip-link {
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        border: 2px solid ButtonText !important;
+    }
+
+    .skip-link:focus {
+        outline: 3px solid ButtonText !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/* Print styles for high contrast */
+@media print and (prefers-contrast: high) {
+    * {
+        background: white !important;
+        color: black !important;
+        border-color: black !important;
+    }
+
+    .MuiCard-root,
+    .MuiButton-root,
+    .MuiTextField-root {
+        border: 2px solid black !important;
+    }
+}

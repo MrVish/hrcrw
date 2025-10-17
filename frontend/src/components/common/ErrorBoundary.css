@@ -1,0 +1,138 @@
+.error-boundary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: 2rem;
+    background-color: #f8f9fa;
+}
+
+.error-boundary__container {
+    max-width: 500px;
+    text-align: center;
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-boundary__icon {
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.error-boundary__icon svg {
+    width: 64px;
+    height: 64px;
+}
+
+.error-boundary__title {
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.error-boundary__message {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.error-boundary__details {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.error-boundary__details p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+.error-boundary__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-boundary__button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+}
+
+.error-boundary__button--primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.error-boundary__button--primary:hover {
+    background-color: #0056b3;
+}
+
+.error-boundary__button--secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.error-boundary__button--secondary:hover {
+    background-color: #545b62;
+}
+
+.error-boundary__debug {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.error-boundary__debug summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.error-boundary__stack,
+.error-boundary__component-stack {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .error-boundary {
+        padding: 1rem;
+        min-height: 300px;
+    }
+
+    .error-boundary__container {
+        padding: 1.5rem;
+    }
+
+    .error-boundary__actions {
+        flex-direction: column;
+    }
+
+    .error-boundary__button {
+        width: 100%;
+    }
+}

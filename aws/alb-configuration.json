@@ -1,0 +1,138 @@
+{
+    "loadBalancer": {
+        "name": "hrcrw-alb",
+        "scheme": "internet-facing",
+        "type": "application",
+        "ipAddressType": "ipv4",
+        "subnets": [
+            "subnet-PUBLIC_SUBNET_1",
+            "subnet-PUBLIC_SUBNET_2"
+        ],
+        "securityGroups": [
+            "sg-ALB_SECURITY_GROUP"
+        ],
+        "tags": [
+            {
+                "key": "Environment",
+                "value": "production"
+            },
+            {
+                "key": "Application",
+                "value": "hrcrw"
+            }
+        ]
+    },
+    "targetGroups": [
+        {
+            "name": "hrcrw-backend-tg",
+            "protocol": "HTTP",
+            "port": 8000,
+            "vpcId": "vpc-VPC_ID",
+            "targetType": "ip",
+            "healthCheckProtocol": "HTTP",
+            "healthCheckPath": "/health",
+            "healthCheckIntervalSeconds": 30,
+            "healthCheckTimeoutSeconds": 5,
+            "healthyThresholdCount": 2,
+            "unhealthyThresholdCount": 3,
+            "matcher": {
+                "httpCode": "200"
+            },
+            "tags": [
+                {
+                    "key": "Environment",
+                    "value": "production"
+                },
+                {
+                    "key": "Application",
+                    "value": "hrcrw"
+                },
+                {
+                    "key": "Component",
+                    "value": "backend"
+                }
+            ]
+        },
+        {
+            "name": "hrcrw-frontend-tg",
+            "protocol": "HTTP",
+            "port": 80,
+            "vpcId": "vpc-VPC_ID",
+            "targetType": "ip",
+            "healthCheckProtocol": "HTTP",
+            "healthCheckPath": "/health",
+            "healthCheckIntervalSeconds": 30,
+            "healthCheckTimeoutSeconds": 5,
+            "healthyThresholdCount": 2,
+            "unhealthyThresholdCount": 3,
+            "matcher": {
+                "httpCode": "200"
+            },
+            "tags": [
+                {
+                    "key": "Environment",
+                    "value": "production"
+                },
+                {
+                    "key": "Application",
+                    "value": "hrcrw"
+                },
+                {
+                    "key": "Component",
+                    "value": "frontend"
+                }
+            ]
+        }
+    ],
+    "listeners": [
+        {
+            "protocol": "HTTPS",
+            "port": 443,
+            "sslPolicy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+            "certificates": [
+                {
+                    "certificateArn": "arn:aws:acm:REGION:ACCOUNT_ID:certificate/CERTIFICATE_ID"
+                }
+            ],
+            "defaultActions": [
+                {
+                    "type": "forward",
+                    "targetGroupArn": "arn:aws:elasticloadbalancing:REGION:ACCOUNT_ID:targetgroup/hrcrw-frontend-tg/TARGET_GROUP_ID"
+                }
+            ],
+            "rules": [
+                {
+                    "priority": 100,
+                    "conditions": [
+                        {
+                            "field": "path-pattern",
+                            "values": [
+                                "/api/*"
+                            ]
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "type": "forward",
+                            "targetGroupArn": "arn:aws:elasticloadbalancing:REGION:ACCOUNT_ID:targetgroup/hrcrw-backend-tg/TARGET_GROUP_ID"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "protocol": "HTTP",
+            "port": 80,
+            "defaultActions": [
+                {
+                    "type": "redirect",
+                    "redirectConfig": {
+                        "protocol": "HTTPS",
+                        "port": "443",
+                        "statusCode": "HTTP_301"
+                    }
+                }
+            ]
+        }
+    ]
+}
