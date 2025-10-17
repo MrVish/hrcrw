@@ -361,7 +361,7 @@ export interface DashboardMetrics {
 // Notification types
 export interface Notification {
   id: string
-  type: 'review_submitted' | 'review_approved' | 'review_rejected' | 'exception_created' | 'user_assigned'
+  type: 'review_pending' | 'review_approved' | 'review_rejected' | 'exception_open' | 'review_result_approved' | 'review_result_rejected' | 'user_assigned'
   title: string
   message: string
   timestamp: string

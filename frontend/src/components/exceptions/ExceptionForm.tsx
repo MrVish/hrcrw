@@ -111,7 +111,10 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
 
     // Permission detection logic
     const permissions = useMemo(() => {
+        console.log('Permission check:', { user: user?.role, exceptionData: exceptionData?.id, hasUser: !!user, hasExceptionData: !!exceptionData })
+
         if (!user || !exceptionData) {
+            console.log('Missing user or exceptionData, returning VIEW_ONLY')
             return {
                 actions: ['VIEW_ONLY'] as ActionType[],
                 canEdit: false,
@@ -128,16 +131,39 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
         })
 
         const userRole = user.role.toLowerCase() as 'admin' | 'checker' | 'maker'
-        const canEdit = userRole === 'maker' && ownerStatus && exceptionData.status === 'OPEN'
-        const canApproveReject = ['checker', 'admin'].includes(userRole) &&
-            ['OPEN', 'IN_PROGRESS'].includes(exceptionData.status)
 
-        return {
-            actions: availableActions,
+        // For new exceptions (id === 0), allow admin and checker to create/edit
+        const isNewException = exceptionData.id === 0
+        const canEdit = isNewException
+            ? ['admin', 'checker'].includes(userRole)
+            : (userRole === 'maker' && ownerStatus && exceptionData.status === 'open')
+
+        const canApproveReject = ['checker', 'admin'].includes(userRole) &&
+            ['open', 'in_progress'].includes(exceptionData.status)
+
+        console.log('Permission calculation:', {
+            userRole,
+            isNewException,
+            canEdit,
+            canApproveReject,
+            availableActions,
+            exceptionStatus: exceptionData.status
+        })
+
+        // For new exceptions, override actions for admin/checker users
+        const finalActions = isNewException && ['admin', 'checker'].includes(userRole)
+            ? ['SAVE_DRAFT', 'SUBMIT'] as ActionType[]
+            : availableActions
+
+        const result = {
+            actions: finalActions,
             canEdit,
             canApproveReject,
             isOwner: ownerStatus
         }
+
+        console.log('Final permissions:', result)
+        return result
     }, [user, exceptionData])
 
     useEffect(() => {
@@ -161,7 +187,7 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
                         title: '',
                         description: '',
                         priority: 'MEDIUM',
-                        status: 'OPEN',
+                        status: 'open',
                         resolution_notes: null,
                         resolved_at: null,
                         due_date: null,
@@ -182,7 +208,7 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
         try {
             const reviewsResponse = await apiClient.getReviews()
 
-
+            console.log('Reviews response:', reviewsResponse)
 
             // Ensure reviewsResponse and reviews array exist
             if (!reviewsResponse || !reviewsResponse.reviews || !Array.isArray(reviewsResponse.reviews)) {
@@ -191,15 +217,18 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
                 return
             }
 
-            // Filter to only show submitted/approved reviews and map to our interface
-            const validStatuses = ['submitted', 'under_review', 'approved']
+            // Filter to show reviews that can have exceptions created for them
+            // Include draft status so checkers can create exceptions for reviews being worked on
+            const validStatuses = ['draft', 'submitted', 'under_review', 'approved']
             const availableReviews = reviewsResponse.reviews
                 .filter((review: any) => {
                     if (!review || !review.status) {
                         return false
                     }
                     const statusString = String(review.status).toLowerCase()
-                    return validStatuses.includes(statusString)
+                    const isValid = validStatuses.includes(statusString)
+                    console.log('Review filter:', { id: review.id, status: review.status, statusString, isValid })
+                    return isValid
                 })
                 .map((review: any) => ({
                     review_id: review.id,
@@ -318,7 +347,7 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
             if (exceptionId) {
                 response = await apiClient.updateException(exceptionId, payload)
             } else {
-                response = await apiClient.createException(payload)
+                response = await apiClient.createReviewException(formData.review_id!, payload)
             }
 
             setSuccess(exceptionId ? 'Exception updated successfully' : 'Exception created successfully')
@@ -356,7 +385,7 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
                     due_date: undefined
                 }
 
-                const response = await apiClient.createException(payload)
+                const response = await apiClient.createReviewException(formData.review_id!, payload)
                 await apiClient.updateExceptionStatus(response.id, 'IN_PROGRESS')
                 setSuccess('Exception created and submitted for review successfully')
 

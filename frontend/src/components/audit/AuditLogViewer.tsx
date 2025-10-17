@@ -71,11 +71,26 @@ export const AuditLogViewer: React.FC = () => {
         setLoading(true)
         setError(null)
         try {
-            const { page, per_page, sort_by, sort_order, ...auditFilters } = filters
-            const response = await apiClient.getAuditLogs(auditFilters, page, per_page)
-            setAuditLogs(response.items)
-            setTotalCount(response.total)
-            setTotalPages(Math.ceil(response.total / per_page))
+            // First test CORS
+            try {
+                const corsTest = await apiClient.testAuditCors()
+                console.log('CORS test successful:', corsTest)
+            } catch (corsErr) {
+                console.error('CORS test failed:', corsErr)
+            }
+
+            // Try the simple endpoint first
+            const { page, per_page } = filters
+            const response = await apiClient.getAuditLogsSimple(page, per_page)
+
+            if (response.error) {
+                throw new Error(`Backend error: ${response.error}`)
+            }
+
+            console.log('Audit logs response:', response)
+            setAuditLogs(response.audit_logs || [])
+            setTotalCount(response.total || 0)
+            setTotalPages(Math.ceil((response.total || 0) / per_page))
         } catch (err) {
             console.error('Audit API Error:', err)
             setError(err instanceof Error ? err.message : 'Failed to fetch audit logs')
@@ -127,7 +142,15 @@ export const AuditLogViewer: React.FC = () => {
             case 'CREATE': return 'success'
             case 'UPDATE': return 'warning'
             case 'DELETE': return 'error'
-            case 'VIEW': return 'info'
+            case 'LOGIN': return 'info'
+            case 'LOGOUT': return 'info'
+            case 'SUBMIT': return 'primary'
+            case 'APPROVE': return 'success'
+            case 'REJECT': return 'error'
+            case 'ASSIGN': return 'warning'
+            case 'RESOLVE': return 'success'
+            case 'ERROR': return 'error'
+            case 'ACCESS': return 'info'
             default: return 'default'
         }
     }
@@ -138,15 +161,25 @@ export const AuditLogViewer: React.FC = () => {
             case 'exception': return 'error'
             case 'client': return 'info'
             case 'user': return 'secondary'
+            case 'document': return 'warning'
+            case 'system': return 'default'
+            case 'kyc_questionnaire': return 'info'
+            case 'notification': return 'warning'
             default: return 'default'
         }
     }
 
     const filteredLogs = auditLogs.filter(log => {
+        // Skip logs with errors (using type assertion for error handling)
+        if ((log as any).error) {
+            console.warn('Skipping malformed audit log:', log)
+            return false
+        }
+
         const matchesSearch = !searchTerm ||
             log.user_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            log.entity_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            log.action.toLowerCase().includes(searchTerm.toLowerCase())
+            log.entity_type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            log.action?.toLowerCase().includes(searchTerm.toLowerCase())
 
         const matchesEntityType = !entityTypeFilter || log.entity_type === entityTypeFilter
         const matchesAction = !actionFilter || log.action === actionFilter
@@ -362,7 +395,7 @@ export const AuditLogViewer: React.FC = () => {
                                     <TableRow key={log.id} hover>
                                         <TableCell>
                                             <Typography variant="body2">
-                                                {format(new Date(log.created_at), 'MMM dd, yyyy HH:mm:ss')}
+                                                {log.created_at ? format(new Date(log.created_at), 'MMM dd, yyyy HH:mm:ss') : 'Unknown Date'}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
@@ -372,16 +405,16 @@ export const AuditLogViewer: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             <Chip
-                                                label={log.action}
-                                                color={getActionColor(log.action) as any}
+                                                label={log.action || 'Unknown'}
+                                                color={getActionColor(log.action || '') as any}
                                                 size="small"
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <Chip
-                                                label={log.entity_type}
-                                                color={getEntityTypeColor(log.entity_type) as any}
+                                                label={log.entity_type || 'Unknown'}
+                                                color={getEntityTypeColor(log.entity_type || '') as any}
                                                 size="small"
                                                 variant="filled"
                                                 sx={{
@@ -392,12 +425,12 @@ export const AuditLogViewer: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             <Typography variant="body2" fontFamily="monospace">
-                                                {log.entity_id}
+                                                {log.entity_id || 'N/A'}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Typography variant="body2" color="text.secondary">
-                                                {Object.keys(log.details).length} properties
+                                                {log.details ? Object.keys(log.details).length : 0} properties
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
@@ -496,7 +529,7 @@ export const AuditLogViewer: React.FC = () => {
                                 </Typography>
                                 <Paper sx={{ p: 2, backgroundColor: 'grey.50' }}>
                                     <pre style={{ margin: 0, fontSize: '0.875rem', whiteSpace: 'pre-wrap' }}>
-                                        {JSON.stringify(selectedLog.details, null, 2)}
+                                        {JSON.stringify(selectedLog.details || {}, null, 2)}
                                     </pre>
                                 </Paper>
                             </Grid>

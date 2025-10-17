@@ -338,29 +338,64 @@ export const MyTasksPage: React.FC = () => {
                 {summary && (
                     <Grid container spacing={3} mb={4}>
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1), color: theme.palette.primary.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.primary.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.2)}`,
+                                            }}
+                                        >
                                             <ClockIcon />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.totalTasks}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.totalTasks}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Total Tasks
                                             </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                All pending items
+                                            </Typography>
                                         </Box>
                                     </Box>
                                 </CardContent>
@@ -368,29 +403,64 @@ export const MyTasksPage: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.warning.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.warning.main, 0.2)}`,
+                                            }}
+                                        >
                                             <ReviewIcon />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.pendingReviews}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.pendingReviews}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Pending Reviews
                                             </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                Awaiting approval
+                                            </Typography>
                                         </Box>
                                     </Box>
                                 </CardContent>
@@ -398,29 +468,64 @@ export const MyTasksPage: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.error.main, 0.1), color: theme.palette.error.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.error.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.error.main, 0.2)}`,
+                                            }}
+                                        >
                                             <ExceptionIcon />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.openExceptions}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.openExceptions}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Open Exceptions
                                             </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                Require attention
+                                            </Typography>
                                         </Box>
                                     </Box>
                                 </CardContent>
@@ -428,29 +533,64 @@ export const MyTasksPage: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.error.main, 0.1), color: theme.palette.error.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.error.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.error.main, 0.2)}`,
+                                            }}
+                                        >
                                             <TrendingUp />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.overdueTasks}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.overdueTasks}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Overdue
                                             </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                Past due date
+                                            </Typography>
                                         </Box>
                                     </Box>
                                 </CardContent>
@@ -458,29 +598,64 @@ export const MyTasksPage: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.info.main, 0.1), color: theme.palette.info.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.info.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.info.main, 0.2)}`,
+                                            }}
+                                        >
                                             <ClockIcon />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.dueTodayTasks}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.dueTodayTasks}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Due Today
                                             </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                Urgent attention
+                                            </Typography>
                                         </Box>
                                     </Box>
                                 </CardContent>
@@ -488,28 +663,63 @@ export const MyTasksPage: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={4} lg={2}>
-                            <Card elevation={0} sx={{
-                                border: `1px solid ${theme.palette.grey[200]}`,
-                                borderRadius: 2,
-                                height: '100%',
-                                minHeight: 120
-                            }}>
-                                <CardContent sx={{
-                                    p: 2.5,
+                            <Card
+                                elevation={0}
+                                sx={{
                                     height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                    <Box display="flex" alignItems="center" gap={2} width="100%">
-                                        <Avatar sx={{ bgcolor: alpha(theme.palette.success.main, 0.1), color: theme.palette.success.main }}>
+                                    minHeight: 140,
+                                    background: 'white',
+                                    border: `1px solid ${theme.palette.grey[200]}`,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+                                        borderColor: theme.palette.success.main,
+                                    },
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                    },
+                                }}
+                            >
+                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+                                        <Avatar
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                boxShadow: `0 8px 16px ${alpha(theme.palette.success.main, 0.2)}`,
+                                            }}
+                                        >
                                             <ClockIcon />
                                         </Avatar>
-                                        <Box flex={1}>
-                                            <Typography variant="h5" fontWeight="bold">
-                                                {summary.dueThisWeekTasks}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" noWrap>
+                                    </Box>
+                                    <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography
+                                            variant="h4"
+                                            component="div"
+                                            fontWeight="bold"
+                                            color="text.primary"
+                                            mb={1}
+                                            sx={{ lineHeight: 1.2 }}
+                                        >
+                                            {summary.dueThisWeekTasks}
+                                        </Typography>
+                                        <Box>
+                                            <Typography variant="body2" color="text.primary" fontWeight={600} mb={0.5}>
                                                 Due This Week
+                                            </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+                                                Plan ahead
                                             </Typography>
                                         </Box>
                                     </Box>
@@ -520,9 +730,21 @@ export const MyTasksPage: React.FC = () => {
                 )}
 
                 {/* Filters and Search */}
-                <Card elevation={0} sx={{ border: `1px solid ${theme.palette.grey[200]}`, mb: 3 }}>
+                <Card
+                    elevation={0}
+                    sx={{
+                        border: `1px solid ${theme.palette.grey[200]}`,
+                        borderRadius: 3,
+                        mb: 3,
+                        background: 'white',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+                        }
+                    }}
+                >
                     <CardContent sx={{ p: 3 }}>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid container spacing={3} alignItems="center">
                             <Grid item xs={12} md={4}>
                                 <TextField
                                     fullWidth
@@ -531,6 +753,14 @@ export const MyTasksPage: React.FC = () => {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     InputProps={{
                                         startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: 2,
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: theme.palette.primary.main,
+                                            },
+                                        },
                                     }}
                                 />
                             </Grid>
@@ -541,6 +771,12 @@ export const MyTasksPage: React.FC = () => {
                                         value={priorityFilter}
                                         label="Priority"
                                         onChange={(e) => setPriorityFilter(e.target.value)}
+                                        sx={{
+                                            borderRadius: 2,
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: theme.palette.primary.main,
+                                            },
+                                        }}
                                     >
                                         <MenuItem value="">All</MenuItem>
                                         <MenuItem value="CRITICAL">Critical</MenuItem>
@@ -557,6 +793,12 @@ export const MyTasksPage: React.FC = () => {
                                         value={statusFilter}
                                         label="Status"
                                         onChange={(e) => setStatusFilter(e.target.value)}
+                                        sx={{
+                                            borderRadius: 2,
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: theme.palette.primary.main,
+                                            },
+                                        }}
                                     >
                                         <MenuItem value="">All</MenuItem>
                                         <MenuItem value="submitted">Submitted</MenuItem>
@@ -567,13 +809,22 @@ export const MyTasksPage: React.FC = () => {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={4}>
-                                <Box display="flex" gap={1} justifyContent="flex-end">
+                                <Box display="flex" gap={2} justifyContent="flex-end">
                                     <Button
                                         variant="outlined"
                                         onClick={() => {
                                             setSearchTerm('')
                                             setPriorityFilter('')
                                             setStatusFilter('')
+                                        }}
+                                        sx={{
+                                            borderRadius: 2,
+                                            borderColor: theme.palette.grey[300],
+                                            '&:hover': {
+                                                borderColor: theme.palette.primary.main,
+                                                transform: 'translateY(-1px)',
+                                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                            },
                                         }}
                                     >
                                         Clear Filters
@@ -582,6 +833,15 @@ export const MyTasksPage: React.FC = () => {
                                         variant="contained"
                                         onClick={fetchMyTasks}
                                         startIcon={<RefreshIcon />}
+                                        sx={{
+                                            borderRadius: 2,
+                                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                            '&:hover': {
+                                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                transform: 'translateY(-1px)',
+                                                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)',
+                                            },
+                                        }}
                                     >
                                         Refresh
                                     </Button>
@@ -592,9 +852,44 @@ export const MyTasksPage: React.FC = () => {
                 </Card>
 
                 {/* Tabs */}
-                <Card elevation={0} sx={{ border: `1px solid ${theme.palette.grey[200]}` }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={tabValue} onChange={(_, newValue) => setTabValue(newValue)}>
+                <Card
+                    elevation={0}
+                    sx={{
+                        border: `1px solid ${theme.palette.grey[200]}`,
+                        borderRadius: 3,
+                        background: 'white',
+                        overflow: 'hidden',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+                        }
+                    }}
+                >
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
+                        <Tabs
+                            value={tabValue}
+                            onChange={(_, newValue) => setTabValue(newValue)}
+                            sx={{
+                                '& .MuiTab-root': {
+                                    fontWeight: 600,
+                                    textTransform: 'none',
+                                    fontSize: '0.95rem',
+                                    minHeight: 56,
+                                    '&:hover': {
+                                        color: theme.palette.primary.main,
+                                        backgroundColor: alpha(theme.palette.primary.main, 0.04),
+                                    },
+                                },
+                                '& .Mui-selected': {
+                                    color: theme.palette.primary.main,
+                                },
+                                '& .MuiTabs-indicator': {
+                                    height: 3,
+                                    borderRadius: '3px 3px 0 0',
+                                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                },
+                            }}
+                        >
                             <Tab label={`All Tasks (${tasks.length})`} />
                             <Tab label={`Reviews (${tasks.filter(t => t.type === 'review').length})`} />
                             <Tab label={`Exceptions (${tasks.filter(t => t.type === 'exception').length})`} />

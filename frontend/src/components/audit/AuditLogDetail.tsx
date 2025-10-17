@@ -8,7 +8,7 @@ interface AuditLog {
     entity_id: string
     action: string
     created_at: string
-    details: Record<string, any>
+    details: Record<string, any> | null
     user_name?: string
     user_email?: string
     user_role?: string
@@ -82,8 +82,10 @@ export const AuditLogDetail: React.FC<AuditLogDetailProps> = ({ log, onClose }) 
         return descriptions[action] || `Performed ${action} on ${entityType.toLowerCase()}`
     }
 
-    const extractKeyDetails = (details: Record<string, any>) => {
+    const extractKeyDetails = (details: Record<string, any> | null) => {
         const keyDetails: Array<{ label: string; value: any }> = []
+
+        if (!details) return keyDetails
 
         if (details.description) {
             keyDetails.push({ label: 'Description', value: details.description })
@@ -222,7 +224,7 @@ export const AuditLogDetail: React.FC<AuditLogDetailProps> = ({ log, onClose }) 
 
                         {activeTab === 'details' && (
                             <div className="details-tab">
-                                {Object.keys(log.details).length > 0 ? (
+                                {log.details && Object.keys(log.details).length > 0 ? (
                                     <div className="formatted-details">
                                         {formatJsonValue(log.details)}
                                     </div>

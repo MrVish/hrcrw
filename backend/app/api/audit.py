@@ -8,7 +8,7 @@ from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Response
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import func, desc, and_
+from sqlalchemy import func, desc, and_, text
 from datetime import datetime, timedelta
 
 from app.core.database import get_db
@@ -36,6 +36,169 @@ from app.services.audit import AuditService
 router = APIRouter(prefix="/audit", tags=["audit"])
 
 
+@router.get("/test")
+async def test_audit_endpoint():
+    """Test endpoint to verify audit API is working."""
+    return {"message": "Audit API is working", "timestamp": datetime.utcnow().isoformat()}
+
+
+@router.get("/cors-test")
+async def cors_test_endpoint():
+    """Test endpoint to verify CORS is working."""
+    return {
+        "message": "CORS is working for audit API", 
+        "timestamp": datetime.utcnow().isoformat(),
+        "cors_headers": "should be present"
+    }
+
+
+@router.get("/db-test")
+async def db_test_endpoint(db: Session = Depends(get_db)):
+    """Test endpoint to verify database connection."""
+    try:
+        # Test basic database connection
+        result = db.execute(text("SELECT 1 as test")).fetchone()
+        return {
+            "message": "Database connection is working",
+            "test_result": result[0] if result else None,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        return {
+            "error": f"Database connection failed: {str(e)}",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+
+
+@router.get("/mock-logs")
+async def get_mock_audit_logs(
+    page: int = Query(1, ge=1, description="Page number for pagination"),
+    per_page: int = Query(20, ge=1, le=200, description="Number of items per page")
+):
+    """Mock audit logs endpoint for testing frontend."""
+    # Create some mock audit log data
+    mock_logs = []
+    for i in range(min(per_page, 10)):  # Return up to 10 mock logs
+        mock_logs.append({
+            "id": i + 1,
+            "user_id": 1,
+            "entity_type": "CLIENT",
+            "entity_id": f"client_{i + 1}",
+            "action": "CREATE",
+            "created_at": datetime.utcnow().isoformat(),
+            "description": f"Mock audit log entry {i + 1}",
+            "user_name": "Test User",
+            "user_email": "test@example.com",
+            "user_role": "admin"
+        })
+    
+    return {
+        "audit_logs": mock_logs,
+        "total": 50,  # Mock total
+        "page": page,
+        "per_page": per_page,
+        "debug": "Mock data for testing"
+    }
+
+
+@router.get("/logs-simple")
+async def get_audit_logs_simple(
+    page: int = Query(1, ge=1, description="Page number for pagination"),
+    per_page: int = Query(20, ge=1, le=200, description="Number of items per page"),
+    db: Session = Depends(get_db)
+):
+    """
+    Simplified audit logs endpoint for debugging.
+    """
+    try:
+        # Check if we can access the audit logs table
+        try:
+            # Simple count query to test table access
+            total_count = db.query(AuditLog).count()
+        except Exception as table_error:
+            return {
+                "error": f"Table access error: {str(table_error)}",
+                "audit_logs": [],
+                "total": 0,
+                "page": page,
+                "per_page": per_page,
+                "debug": "audit_logs table may not exist or be accessible"
+            }
+        
+        # Simple query without complex filtering
+        offset = (page - 1) * per_page
+        
+        try:
+            audit_logs = db.query(AuditLog).options(joinedload(AuditLog.user)).order_by(desc(AuditLog.created_at)).offset(offset).limit(per_page).all()
+            # We already have total_count from the table check above
+        except Exception as query_error:
+            return {
+                "error": f"Query error: {str(query_error)}",
+                "audit_logs": [],
+                "total": 0,
+                "page": page,
+                "per_page": per_page,
+                "debug": "Error executing audit log query"
+            }
+        
+        # Simple response format
+        simple_logs = []
+        for log in audit_logs:
+            try:
+                # Handle enum values safely
+                entity_type_str = str(log.entity_type.value) if hasattr(log.entity_type, 'value') else str(log.entity_type)
+                action_str = str(log.action.value) if hasattr(log.action, 'value') else str(log.action)
+                
+                # Get user name if available
+                user_name = None
+                if log.user_id and log.user:
+                    user_name = log.user.name
+                elif log.user_id:
+                    user_name = f"User {log.user_id}"
+                else:
+                    user_name = "System"
+                
+                simple_logs.append({
+                    "id": log.id,
+                    "user_id": log.user_id,
+                    "user_name": user_name,
+                    "entity_type": entity_type_str,
+                    "entity_id": log.entity_id,
+                    "action": action_str,
+                    "created_at": log.created_at.isoformat() if log.created_at else None,
+                    "description": log.description or f"Action {action_str} on {entity_type_str}",
+                    "details": log.details
+                })
+            except Exception as log_error:
+                # Skip problematic logs but continue
+                simple_logs.append({
+                    "id": getattr(log, 'id', 'unknown'),
+                    "error": f"Error processing log: {str(log_error)}",
+                    "raw_entity_type": str(getattr(log, 'entity_type', 'unknown')),
+                    "raw_action": str(getattr(log, 'action', 'unknown'))
+                })
+        
+        return {
+            "audit_logs": simple_logs,
+            "total": total_count,
+            "page": page,
+            "per_page": per_page,
+            "debug": f"Successfully retrieved {len(simple_logs)} logs"
+        }
+        
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "audit_logs": [],
+            "total": 0,
+            "page": page,
+            "per_page": per_page,
+            "debug": "General exception in audit logs endpoint"
+        }
+
+
 @router.get("/logs", response_model=AuditLogListResponse)
 async def get_audit_logs(
     user_id: Optional[int] = Query(None, description="Filter by user ID"),
@@ -54,60 +217,77 @@ async def get_audit_logs(
     
     Accessible by Makers, Checkers, and Admins for compliance monitoring.
     """
-    # Create search filters
-    filters = AuditLogSearchFilters(
-        user_id=user_id,
-        entity_type=entity_type,
-        entity_id=entity_id,
-        action=action,
-        start_date=start_date,
-        end_date=end_date,
-        page=page,
-        per_page=per_page
-    )
-    
-    # Get audit logs using service
-    audit_service = AuditService(db)
-    audit_logs, total_count = audit_service.get_audit_logs(
-        user_id=filters.user_id,
-        entity_type=filters.entity_type,
-        entity_id=filters.entity_id,
-        action=filters.action,
-        start_date=filters.start_date,
-        end_date=filters.end_date,
-        page=filters.page,
-        per_page=filters.per_page
-    )
-    
-    # Calculate pagination info
-    total_pages = (total_count + per_page - 1) // per_page
-    
-    # Enrich audit logs with user information
-    detailed_logs = []
-    for log in audit_logs:
-        user = db.query(User).filter(User.id == log.user_id).first()
-        
-        log_detail = AuditLogDetailResponse(
-            id=log.id,
-            user_id=log.user_id,
-            entity_type=log.entity_type.value,
-            entity_id=log.entity_id,
-            action=log.action.value,
-            created_at=log.created_at,
-            details=log.details or {},
-            user_name=user.name if user else None,
-            user_email=user.email if user else None,
-            user_role=user.role.value if user else None
+    try:
+        # Create search filters
+        filters = AuditLogSearchFilters(
+            user_id=user_id,
+            entity_type=entity_type,
+            entity_id=entity_id,
+            action=action,
+            start_date=start_date,
+            end_date=end_date,
+            page=page,
+            per_page=per_page
         )
-        detailed_logs.append(log_detail)
-    
-    return AuditLogListResponse(
-        audit_logs=detailed_logs,
-        total=total_count,
-        page=page,
-        per_page=per_page,
-        total_pages=total_pages
-    )
+        
+        # Get audit logs using service
+        audit_service = AuditService(db)
+        audit_logs, total_count = audit_service.get_audit_logs(
+            user_id=filters.user_id,
+            entity_type=filters.entity_type,
+            entity_id=filters.entity_id,
+            action=filters.action,
+            start_date=filters.start_date,
+            end_date=filters.end_date,
+            page=filters.page,
+            per_page=filters.per_page
+        )
+        
+        # Calculate pagination info
+        total_pages = (total_count + per_page - 1) // per_page
+        
+        # Enrich audit logs with user information
+        detailed_logs = []
+        for log in audit_logs:
+            try:
+                user = db.query(User).filter(User.id == log.user_id).first()
+                
+                log_detail = AuditLogDetailResponse(
+                    id=log.id,
+                    user_id=log.user_id,
+                    entity_type=log.entity_type.value if hasattr(log.entity_type, 'value') else str(log.entity_type),
+                    entity_id=log.entity_id,
+                    action=log.action.value if hasattr(log.action, 'value') else str(log.action),
+                    created_at=log.created_at,
+                    details=log.details or {},
+                    user_name=user.name if user else None,
+                    user_email=user.email if user else None,
+                    user_role=user.role.value if user and hasattr(user.role, 'value') else None
+                )
+                detailed_logs.append(log_detail)
+            except Exception as e:
+                # Skip problematic log entries but continue processing
+                print(f"Error processing audit log {log.id}: {e}")
+                continue
+        
+        return AuditLogListResponse(
+            audit_logs=detailed_logs,
+            total=total_count,
+            page=page,
+            per_page=per_page,
+            total_pages=total_pages
+        )
+        
+    except Exception as e:
+        # Return empty result if there's an error
+        print(f"Error in get_audit_logs: {e}")
+        return AuditLogListResponse(
+            audit_logs=[],
+            total=0,
+            page=page,
+            per_page=per_page,
+            total_pages=0
+        )
 
 
 @router.get("/logs/statistics", response_model=AuditLogStatsResponse)

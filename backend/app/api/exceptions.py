@@ -12,7 +12,8 @@ from app.core.auth import (
     get_current_user,
     require_checker_role,
     require_maker_or_checker_role,
-    require_admin_role
+    require_admin_role,
+    require_checker_or_admin_role
 )
 from app.models.user import User
 from app.models.exception import ExceptionType, ExceptionStatus, ExceptionPriority
@@ -304,7 +305,7 @@ async def create_exception_for_review(
     review_id: int,
     exception_data: ReviewExceptionCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_maker_or_checker_role)
+    current_user: User = Depends(require_checker_or_admin_role)
 ):
     """
     Create a new exception for a specific review.
@@ -415,7 +416,7 @@ async def create_multiple_exceptions_for_review(
     review_id: int,
     exception_types: List[ExceptionType],
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_maker_or_checker_role)
+    current_user: User = Depends(require_checker_or_admin_role)
 ):
     """
     Create multiple exceptions for a specific review.

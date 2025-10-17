@@ -123,7 +123,7 @@ class NotificationQueue:
             if self.audit_service and user_id:
                 self.audit_service.log_action(
                     user_id=user_id,
-                    entity_type="notification_queue",
+                    entity_type="NOTIFICATION_QUEUE",
                     entity_id=str(queue_id),
                     action="enqueue",
                     details={
@@ -196,7 +196,7 @@ class NotificationQueue:
                         if self.audit_service and user_id:
                             self.audit_service.log_action(
                                 user_id=user_id,
-                                entity_type="notification_queue",
+                                entity_type="NOTIFICATION_QUEUE",
                                 entity_id=str(queue_id),
                                 action="retry_success",
                                 details={
@@ -216,7 +216,7 @@ class NotificationQueue:
                             if self.audit_service and user_id:
                                 self.audit_service.log_action(
                                     user_id=user_id,
-                                    entity_type="notification_queue",
+                                    entity_type="NOTIFICATION_QUEUE",
                                     entity_id=str(queue_id),
                                     action="retry_failed",
                                     details={

@@ -112,7 +112,7 @@ export interface AuditLog {
   entity_id: string;
   action: string;
   created_at: string;
-  details: Record<string, any>;
+  details: Record<string, any> | null;
 }
 
 export interface AuditFilters {
@@ -281,21 +281,21 @@ class ApiClient {
   }
 
   async markNotificationRead(notificationId: string): Promise<void> {
-    // For now, this is a no-op since we don't have persistent notifications
-    // In a real implementation, this would update the notification status
-    return Promise.resolve();
+    return this.executeWithRetry(async () => {
+      await this.client.post(`/dashboard/notifications/${notificationId}/read`);
+    });
   }
 
   async markAllNotificationsRead(): Promise<void> {
-    // For now, this is a no-op since we don't have persistent notifications
-    // In a real implementation, this would mark all notifications as read
-    return Promise.resolve();
+    return this.executeWithRetry(async () => {
+      await this.client.post('/dashboard/notifications/mark-all-read');
+    });
   }
 
   async dismissNotification(notificationId: string): Promise<void> {
-    // For now, this is a no-op since we don't have persistent notifications
-    // In a real implementation, this would remove the notification
-    return Promise.resolve();
+    return this.executeWithRetry(async () => {
+      await this.client.delete(`/dashboard/notifications/${notificationId}`);
+    });
   }
 
   // Client management endpoints
@@ -584,6 +584,34 @@ class ApiClient {
   }
 
   // Audit log endpoints
+  async testAuditCors(): Promise<any> {
+    return this.executeWithRetry(async () => {
+      const response = await this.client.get('/audit/cors-test');
+      return response.data;
+    });
+  }
+
+  async getAuditLogsSimple(page = 1, per_page = 20): Promise<any> {
+    return this.executeWithRetry(async () => {
+      const response = await this.client.get(`/audit/logs-simple?page=${page}&per_page=${per_page}`);
+      return response.data;
+    });
+  }
+
+  async getAuditLogsMock(page = 1, per_page = 20): Promise<any> {
+    return this.executeWithRetry(async () => {
+      const response = await this.client.get(`/audit/mock-logs?page=${page}&per_page=${per_page}`);
+      return response.data;
+    });
+  }
+
+  async testAuditDb(): Promise<any> {
+    return this.executeWithRetry(async () => {
+      const response = await this.client.get('/audit/db-test');
+      return response.data;
+    });
+  }
+
   async getAuditLogs(filters?: AuditFilters, page = 1, per_page = 20): Promise<{ items: AuditLog[], total: number, page: number, per_page: number, total_pages: number }> {
     const params = new URLSearchParams();
     if (filters?.user_id) params.append('user_id', filters.user_id.toString());

@@ -126,7 +126,7 @@ class KYCQuestionnaireService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=created_by_user_id,
-            entity_type="KYCQuestionnaire",
+            entity_type="KYC_QUESTIONNAIRE",
             entity_id=str(questionnaire.id),
             action="CREATE",
             details={
@@ -192,7 +192,7 @@ class KYCQuestionnaireService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=updated_by_user_id,
-            entity_type="KYCQuestionnaire",
+            entity_type="KYC_QUESTIONNAIRE",
             entity_id=str(questionnaire.id),
             action="UPDATE",
             details={
@@ -244,7 +244,7 @@ class KYCQuestionnaireService:
         # Log audit trail before deletion
         self.audit_service.log_action(
             user_id=deleted_by_user_id,
-            entity_type="KYCQuestionnaire",
+            entity_type="KYC_QUESTIONNAIRE",
             entity_id=str(questionnaire.id),
             action="DELETE",
             details={

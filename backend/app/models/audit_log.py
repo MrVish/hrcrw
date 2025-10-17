@@ -29,6 +29,9 @@ class AuditAction(enum.Enum):
     EXPORT = "export"
     ARCHIVE = "archive"
     RESTORE = "restore"
+    AUTO_REVIEW_CREATION = "auto_review_creation"
+    CLEANUP = "cleanup"
+    ERROR = "error"
 
 
 class AuditEntityType(enum.Enum):
@@ -39,6 +42,9 @@ class AuditEntityType(enum.Enum):
     EXCEPTION = "EXCEPTION"
     DOCUMENT = "DOCUMENT"
     SYSTEM = "SYSTEM"
+    KYC_QUESTIONNAIRE = "KYC_QUESTIONNAIRE"
+    NOTIFICATION = "NOTIFICATION"
+    NOTIFICATION_QUEUE = "NOTIFICATION_QUEUE"
 
 
 class AuditLog(BaseModel):

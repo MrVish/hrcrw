@@ -28,22 +28,24 @@ import {
     Refresh as RefreshIcon,
     MarkEmailRead as MarkAllReadIcon,
 } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 import { apiClient } from '../../services'
+import { useAuth } from '../../contexts'
 import type { Notification } from '../../types'
 
-interface NotificationPanelProps {
-    className?: string
-}
+interface NotificationPanelProps { }
 
 const getNotificationIcon = (type: Notification['type'], theme: any) => {
     switch (type) {
-        case 'review_submitted':
+        case 'review_pending':
             return <FileTextIcon sx={{ color: theme.palette.info.main }} />
         case 'review_approved':
+        case 'review_result_approved':
             return <CheckCircle sx={{ color: theme.palette.success.main }} />
         case 'review_rejected':
+        case 'review_result_rejected':
             return <XIcon sx={{ color: theme.palette.error.main }} />
-        case 'exception_created':
+        case 'exception_open':
             return <AlertTriangleIcon sx={{ color: theme.palette.warning.main }} />
         case 'user_assigned':
             return <UserIcon sx={{ color: theme.palette.primary.main }} />
@@ -75,21 +77,35 @@ const formatTimestamp = (timestamp: string) => {
     return `${Math.floor(diffInMinutes / 1440)}d ago`
 }
 
-export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className = '' }) => {
+export const NotificationPanel: React.FC<NotificationPanelProps> = () => {
     const [notifications, setNotifications] = useState<Notification[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [showAll, setShowAll] = useState(false)
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
     const theme = useTheme()
 
     useEffect(() => {
-        fetchNotifications()
-        // Set up polling for real-time updates
-        const interval = setInterval(fetchNotifications, 30000) // Poll every 30 seconds
-        return () => clearInterval(interval)
-    }, [])
+        if (isAuthenticated) {
+            fetchNotifications()
+            // Set up polling for real-time updates
+            const interval = setInterval(() => {
+                // Only poll if the component is still mounted and user is authenticated
+                if (isAuthenticated) {
+                    fetchNotifications()
+                }
+            }, 30000) // Poll every 30 seconds
+            return () => clearInterval(interval)
+        }
+    }, [isAuthenticated])
 
     const fetchNotifications = async () => {
+        if (!isAuthenticated) {
+            setLoading(false)
+            return
+        }
+
         try {
             setLoading(true)
             const notifications = await apiClient.getNotifications()
@@ -145,7 +161,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
             markAsRead(notification.id)
         }
         if (notification.actionUrl) {
-            window.location.href = notification.actionUrl
+            // Use React Router navigation for proper SPA behavior
+            const path = notification.actionUrl.startsWith('/') ? notification.actionUrl : `/${notification.actionUrl}`
+            navigate(path)
         }
     }
 
@@ -197,16 +215,26 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
                         )}
                     </Box>
 
-                    {unreadCount > 0 && (
-                        <Button
+                    <Box display="flex" gap={1}>
+                        <IconButton
                             size="small"
-                            onClick={markAllAsRead}
-                            startIcon={<MarkAllReadIcon />}
-                            sx={{ fontSize: '0.75rem' }}
+                            onClick={fetchNotifications}
+                            disabled={loading}
+                            sx={{ color: theme.palette.grey[600] }}
                         >
-                            Mark all read
-                        </Button>
-                    )}
+                            <RefreshIcon fontSize="small" />
+                        </IconButton>
+                        {unreadCount > 0 && (
+                            <Button
+                                size="small"
+                                onClick={markAllAsRead}
+                                startIcon={<MarkAllReadIcon />}
+                                sx={{ fontSize: '0.75rem' }}
+                            >
+                                Mark all read
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
 
                 {/* Error State */}

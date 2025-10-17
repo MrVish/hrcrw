@@ -120,7 +120,7 @@ class ReviewService:
         
         self.audit_service.log_action(
             user_id=created_by_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="CREATE",
             details=audit_details
@@ -128,7 +128,7 @@ class ReviewService:
         
         # Record workflow history
         self.workflow_history_service.record_action(
-            entity_type="review",
+            entity_type="REVIEW",
             entity_id=review.id,
             action="create",
             user_id=created_by_user_id,
@@ -187,7 +187,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=updated_by_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="UPDATE",
             details={
@@ -267,7 +267,7 @@ class ReviewService:
         
         self.audit_service.log_action(
             user_id=submitted_by_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="SUBMIT",
             details=audit_details
@@ -275,7 +275,7 @@ class ReviewService:
         
         # Record workflow history
         self.workflow_history_service.record_action(
-            entity_type="review",
+            entity_type="REVIEW",
             entity_id=review.id,
             action="submit",
             user_id=submitted_by_user_id,
@@ -332,7 +332,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=reviewer_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="START_REVIEW",
             details={
@@ -387,7 +387,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=reviewer_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="APPROVE",
             details={
@@ -399,7 +399,7 @@ class ReviewService:
         
         # Record workflow history
         self.workflow_history_service.record_action(
-            entity_type="review",
+            entity_type="REVIEW",
             entity_id=review.id,
             action="approve",
             user_id=reviewer_user_id,
@@ -461,7 +461,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=reviewer_user_id,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="REJECT",
             details={
@@ -474,7 +474,7 @@ class ReviewService:
         
         # Record workflow history
         self.workflow_history_service.record_action(
-            entity_type="review",
+            entity_type="REVIEW",
             entity_id=review.id,
             action="reject",
             user_id=reviewer_user_id,
@@ -882,7 +882,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=created_by_user_id,
-            entity_type="KYCQuestionnaire",
+            entity_type="KYC_QUESTIONNAIRE",
             entity_id=str(questionnaire.id),
             action="CREATE",
             details={
@@ -944,7 +944,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=updated_by_user_id,
-            entity_type="KYCQuestionnaire",
+            entity_type="KYC_QUESTIONNAIRE",
             entity_id=str(questionnaire.id),
             action="UPDATE",
             details={
@@ -1015,7 +1015,7 @@ class ReviewService:
         for exception in created_exceptions:
             self.audit_service.log_action(
                 user_id=created_by_user_id,
-                entity_type="ReviewException",
+                entity_type="EXCEPTION",
                 entity_id=str(exception.id),
                 action="CREATE",
                 details={
@@ -1087,7 +1087,7 @@ class ReviewService:
         if user_id:
             self.audit_service.log_action(
                 user_id=user_id,
-                entity_type="KYCQuestionnaire",
+                entity_type="KYC_QUESTIONNAIRE",
                 entity_id=str(questionnaire.id),
                 action="LINK_DOCUMENT",
                 details={
@@ -1134,7 +1134,7 @@ class ReviewService:
         if user_id:
             self.audit_service.log_action(
                 user_id=user_id,
-                entity_type="KYCQuestionnaire",
+                entity_type="KYC_QUESTIONNAIRE",
                 entity_id=str(questionnaire.id),
                 action="UNLINK_DOCUMENT",
                 details={
@@ -1343,7 +1343,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=submitted_by,
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="CREATE",
             details={
@@ -1389,7 +1389,7 @@ class ReviewService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=review.submitted_by,  # Use original submitter for audit
-            entity_type="Review",
+            entity_type="REVIEW",
             entity_id=str(review.id),
             action="UPDATE",
             details={
@@ -1583,7 +1583,7 @@ class ReviewService:
             # Log the migration
             self.audit_service.log_action(
                 user_id=user_id,
-                entity_type="Review",
+                entity_type="REVIEW",
                 entity_id=str(review.id),
                 action="MIGRATE_TO_ENHANCED",
                 details={

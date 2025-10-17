@@ -9,7 +9,7 @@ interface AuditLog {
     entity_id: string
     action: string
     created_at: string
-    details: Record<string, any>
+    details: Record<string, any> | null
     user_name?: string
     user_email?: string
     user_role?: string
@@ -65,7 +65,7 @@ export const AuditLogTable: React.FC<AuditLogTableProps> = ({
         return icons[entityType] || '📝'
     }
 
-    const formatDetails = (details: Record<string, any>) => {
+    const formatDetails = (details: Record<string, any> | null) => {
         if (!details || Object.keys(details).length === 0) return 'No details'
 
         // Show key details in a readable format

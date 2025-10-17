@@ -156,7 +156,7 @@ class ReviewExceptionService:
         
         self.audit_service.log_action(
             user_id=created_by_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="CREATE",
             details=audit_details
@@ -224,7 +224,7 @@ class ReviewExceptionService:
         for exception in exceptions:
             self.audit_service.log_action(
                 user_id=created_by_user_id,
-                entity_type="ReviewException",
+                entity_type="EXCEPTION",
                 entity_id=str(exception.id),
                 action="CREATE",
                 details={
@@ -384,7 +384,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=updated_by_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="UPDATE",
             details={
@@ -437,7 +437,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=resolved_by_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="RESOLVE",
             details={
@@ -501,7 +501,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=updated_by_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="STATUS_UPDATE",
             details={
@@ -924,7 +924,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=approver_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="APPROVE",
             details={
@@ -1009,7 +1009,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=rejector_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="REJECT",
             details={
@@ -1091,7 +1091,7 @@ class ReviewExceptionService:
         # Log audit trail
         self.audit_service.log_action(
             user_id=assigned_by_user_id,
-            entity_type="ReviewException",
+            entity_type="EXCEPTION",
             entity_id=str(exception.id),
             action="ASSIGN",
             details={

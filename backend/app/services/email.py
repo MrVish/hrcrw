@@ -423,7 +423,7 @@ class EmailService:
                     if self.audit_service and user_id:
                         self.audit_service.log_action(
                             user_id=user_id,
-                            entity_type="notification",
+                            entity_type="NOTIFICATION",
                             entity_id=message_id,
                             action="email_sent",
                             details={
@@ -461,7 +461,7 @@ class EmailService:
                 if self.audit_service and user_id:
                     self.audit_service.log_action(
                         user_id=user_id,
-                        entity_type="notification",
+                        entity_type="NOTIFICATION",
                         entity_id=None,
                         action="email_failed",
                         details={
@@ -484,7 +484,7 @@ class EmailService:
             if self.audit_service and user_id:
                 self.audit_service.log_action(
                     user_id=user_id,
-                    entity_type="notification",
+                    entity_type="NOTIFICATION",
                     entity_id=None,
                     action="email_error",
                     details={
@@ -605,7 +605,7 @@ class EmailService:
         if self.audit_service and user_id:
             self.audit_service.log_action(
                 user_id=user_id,
-                entity_type="notification",
+                entity_type="NOTIFICATION",
                 entity_id=tracking_id,
                 action="email_attempt",
                 details={
@@ -637,7 +637,7 @@ class EmailService:
         if self.audit_service and user_id:
             self.audit_service.log_action(
                 user_id=user_id,
-                entity_type="notification",
+                entity_type="NOTIFICATION",
                 entity_id=tracking_id,
                 action="email_result",
                 details={

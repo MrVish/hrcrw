@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '006_enhance_exception_model'
-down_revision = '005'
+down_revision = '005_add_audit_enum_values'
 branch_labels = None
 depends_on = None
 

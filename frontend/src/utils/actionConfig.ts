@@ -52,6 +52,8 @@ export const getAvailableActions = (context: PermissionContext): ActionType[] =>
   // Normalize role to lowercase for consistent comparison
   const userRole = user.role.toLowerCase() as 'admin' | 'checker' | 'maker'
   
+  console.log('getAvailableActions called:', { userRole, itemId: item.id, isOwner })
+  
   if ('status' in item) {
     // Handle Review items
     const review = item as Review
@@ -74,22 +76,32 @@ export const getAvailableActions = (context: PermissionContext): ActionType[] =>
     // Handle Exception items
     const exception = item as Exception
     
+    // Normalize status to uppercase for consistent comparison
+    const exceptionStatus = exception.status.toUpperCase()
+    
+    // For new exceptions (id === 0), allow admin and checker to create/save
+    if (exception.id === 0 && ['admin', 'checker'].includes(userRole)) {
+      console.log('New exception detected for admin/checker, returning SAVE_DRAFT, SUBMIT')
+      return ['SAVE_DRAFT', 'SUBMIT']
+    }
+    
     // Maker actions (own items only)
-    if (userRole === 'maker' && isOwner && exception.status === 'open') {
+    if (userRole === 'maker' && isOwner && exceptionStatus === 'OPEN') {
       return ['SAVE_DRAFT', 'SUBMIT']
     }
     
     // Checker/Admin actions (submitted items)
-    if (['checker', 'admin'].includes(userRole) && ['open', 'in_progress'].includes(exception.status)) {
+    if (['checker', 'admin'].includes(userRole) && ['OPEN', 'IN_PROGRESS'].includes(exceptionStatus)) {
       return ['ACCEPT', 'REJECT']
     }
     
     // All completed exceptions are view-only
-    if (['resolved', 'closed'].includes(exception.status)) {
+    if (['RESOLVED', 'CLOSED'].includes(exceptionStatus)) {
       return ['VIEW_ONLY']
     }
   }
   
+  console.log('No matching conditions, returning VIEW_ONLY')
   return ['VIEW_ONLY']
 }
 

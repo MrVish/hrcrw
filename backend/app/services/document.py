@@ -125,7 +125,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="document",
+                entity_type="DOCUMENT",
                 entity_id=str(document.id),
                 action="prepare_upload",
                 details={
@@ -210,7 +210,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="document",
+                entity_type="DOCUMENT",
                 entity_id=str(document.id),
                 action="upload_confirmed",
                 details={
@@ -271,7 +271,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="document",
+                entity_type="DOCUMENT",
                 entity_id=str(document.id),
                 action="download_url_generated",
                 details={
@@ -347,7 +347,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="review",
+                entity_type="REVIEW",
                 entity_id=str(review_id),
                 action="documents_accessed",
                 details={
@@ -417,7 +417,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="document",
+                entity_type="DOCUMENT",
                 entity_id=str(document.id),
                 action=action,
                 details={
@@ -491,7 +491,7 @@ class DocumentService:
             audit_service = AuditService(db)
             audit_service.log_action(
                 user_id=user_id,
-                entity_type="document",
+                entity_type="DOCUMENT",
                 entity_id=str(new_document.id),
                 action="version_created",
                 details={
