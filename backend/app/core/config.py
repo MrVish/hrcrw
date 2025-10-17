@@ -39,6 +39,17 @@ class Settings(BaseSettings):
     SES_REPLY_TO_EMAIL: Optional[str] = None
     SES_CONFIGURATION_SET: Optional[str] = None
     
+    # Azure AD settings
+    AZURE_AD_ENABLED: bool = False
+    AZURE_AD_TENANT_ID: Optional[str] = None
+    AZURE_AD_CLIENT_ID: Optional[str] = None
+    AZURE_AD_CLIENT_SECRET: Optional[str] = None
+    AZURE_AD_REDIRECT_URI: Optional[str] = None
+    AZURE_AD_AUTHORITY: Optional[str] = None
+    AZURE_AD_SCOPES: str = "openid profile email"
+    AZURE_AD_GROUP_MAPPING: str = "{}"
+    AZURE_AD_AUTO_PROVISION: bool = True
+    
     # Environment
     ENVIRONMENT: str = "development"
     DEBUG: bool = True

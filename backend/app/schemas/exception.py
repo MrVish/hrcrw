@@ -97,7 +97,11 @@ class ReviewExceptionDetailResponse(ReviewExceptionResponse):
     review_status: Optional[str] = Field(None, description="Status of related review")
     
     # Include client information
+    client_id: Optional[str] = Field(None, description="Client ID from related review")
     client_name: Optional[str] = Field(None, description="Name of the client from related review")
+    
+    # Include user information for frontend compatibility
+    creator_name: Optional[str] = Field(None, description="Name of user who created the exception")
     
     # Additional user information (extends the base user name fields)
     creator_name: Optional[str] = Field(None, description="Name of user who created the exception")

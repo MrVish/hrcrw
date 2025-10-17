@@ -113,6 +113,28 @@ async def get_exceptions(
         if exception.assigned_to and exception.assignee:
             assigned_to_name = exception.assignee.name
 
+        # Safely extract client information
+        client_name = 'Unknown Client'
+        client_id = None
+        review_status = None
+        
+        if exception.review:
+            review_status = exception.review.status.value if exception.review.status else None
+            client_id = exception.review.client_id
+            
+            if exception.review.client:
+                client_name = exception.review.client.name
+            else:
+                # If client relationship is not loaded, try to get client by ID
+                from app.models.client import Client
+                client = db.query(Client).filter(Client.client_id == exception.review.client_id).first()
+                if client:
+                    client_name = client.name
+                else:
+                    logger.warning(f"Client not found for client_id: {exception.review.client_id}")
+        else:
+            logger.warning(f"Review not found for exception {exception.id}")
+
         exception_dict = {
             'id': exception.id,
             'review_id': exception.review_id,
@@ -129,10 +151,10 @@ async def get_exceptions(
             'resolved_at': exception.resolved_at,
             'created_at': exception.created_at,
             'updated_at': exception.updated_at,
-            'client_name': exception.review.client.name if exception.review and exception.review.client else 'Unknown Client',
-            'client_id': exception.review.client_id if exception.review else None,
-            'review_client_id': exception.review.client_id if exception.review else None,
-            'review_status': exception.review.status if exception.review else None,
+            'client_name': client_name,
+            'client_id': client_id,
+            'review_client_id': client_id,
+            'review_status': review_status,
             'creator_name': exception.creator.name if exception.creator else None,
             'resolver_name': exception.resolver.name if exception.resolver else None,
             'assigned_to_name': assigned_to_name,
@@ -254,6 +276,7 @@ async def get_exception_detail(
         'created_at': exception.created_at,
         'updated_at': exception.updated_at,
         'created_by_name': exception_detail["creator_name"],
+        'creator_name': exception_detail["creator_name"],
         'resolved_by_name': exception_detail["resolver_name"],
         'assigned_to_name': exception_detail["assigned_to_name"],
         'is_open': exception.is_open,
@@ -270,6 +293,7 @@ async def get_exception_detail(
         **exception_dict,
         review_client_id=exception_detail["review_client_id"],
         review_status=exception_detail["review_status"],
+        client_id=exception_detail["client_id"],
         client_name=exception_detail["client_name"]
     )
 

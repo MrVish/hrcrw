@@ -209,7 +209,12 @@ export const ExceptionInfoCards: React.FC<ExceptionInfoCardsProps> = ({
                             {exception.review_status && (
                                 <InfoItem
                                     label="Review Status"
-                                    value={exception.review_status ? exception.review_status.replace('_', ' ') : 'Unknown'}
+                                    value={
+                                        <StatusBadge
+                                            status={exception.review_status.toUpperCase() as any}
+                                            type="review"
+                                        />
+                                    }
                                 />
                             )}
                         </CardContent>
