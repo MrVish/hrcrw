@@ -39,6 +39,7 @@ interface SelectedException {
 interface ExceptionSelectorProps {
     onExceptionsChange?: (exceptions: SelectedException[]) => void
     disabled?: boolean
+    initialExceptions?: SelectedException[]
 }
 
 const EXCEPTION_OPTIONS: ExceptionOption[] = [
@@ -64,15 +65,38 @@ const EXCEPTION_OPTIONS: ExceptionOption[] = [
 
 export const ExceptionSelector: React.FC<ExceptionSelectorProps> = ({
     onExceptionsChange,
-    disabled = false
+    disabled = false,
+    initialExceptions = []
 }) => {
     const theme = useTheme()
-    const [selectedExceptions, setSelectedExceptions] = useState<SelectedException[]>([])
+    const [selectedExceptions, setSelectedExceptions] = useState<SelectedException[]>(initialExceptions)
     const [customDescriptions, setCustomDescriptions] = useState<Record<KYCExceptionType, string>>({
         kyc_non_compliance: '',
         dormant_funded_ufaa: '',
         dormant_overdrawn_exit: ''
     })
+
+    // Update selected exceptions when initialExceptions prop changes
+    React.useEffect(() => {
+        if (initialExceptions.length > 0) {
+            setSelectedExceptions(initialExceptions)
+
+            // Set custom descriptions from initial exceptions
+            const descriptions: Record<KYCExceptionType, string> = {
+                kyc_non_compliance: '',
+                dormant_funded_ufaa: '',
+                dormant_overdrawn_exit: ''
+            }
+
+            initialExceptions.forEach(exc => {
+                if (exc.type in descriptions) {
+                    descriptions[exc.type] = exc.description
+                }
+            })
+
+            setCustomDescriptions(descriptions)
+        }
+    }, [initialExceptions])
 
     const handleExceptionToggle = useCallback((option: ExceptionOption) => {
         const isSelected = selectedExceptions.some(ex => ex.type === option.type)

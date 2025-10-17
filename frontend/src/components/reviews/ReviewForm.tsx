@@ -234,6 +234,24 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 console.log('No KYC questionnaire data found in review')
             }
 
+            // Load exceptions for this review
+            try {
+                const reviewExceptions = await apiClient.getReviewExceptions(review.id)
+                console.log('Review exceptions loaded:', reviewExceptions)
+
+                // Convert backend exceptions to frontend format for ExceptionSelector
+                const formattedExceptions = reviewExceptions.map(exc => ({
+                    type: exc.type, // Use the correct field name from Exception type
+                    description: exc.description
+                }))
+
+                setSelectedExceptions(formattedExceptions)
+                console.log('Exception checkbox states restored:', formattedExceptions)
+            } catch (excError) {
+                console.log('No exceptions found for this review or error loading exceptions:', excError)
+                // Don't show error for missing exceptions as it's not critical
+            }
+
             setCurrentReviewId(review.id)
         } catch (err: any) {
             if (err?.message?.includes('Access denied')) {
@@ -737,6 +755,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                                 <KYCQuestionnaireForm
                                     reviewId={currentReviewId || 0}
                                     initialData={kycData || undefined}
+                                    initialExceptions={selectedExceptions}
                                     onDataChange={handleKycDataChange}
                                     onValidationChange={handleKycValidationChange}
                                     disabled={loading || actionLoading.save || actionLoading.submit}

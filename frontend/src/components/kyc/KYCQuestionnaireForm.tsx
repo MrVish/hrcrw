@@ -43,6 +43,7 @@ interface SelectedException {
 interface KYCQuestionnaireFormProps {
     reviewId: number
     initialData?: Partial<KYCQuestionnaire>
+    initialExceptions?: SelectedException[]
     onDataChange?: (data: KYCQuestionnaire, exceptions: SelectedException[]) => void
     onValidationChange?: (isValid: boolean, errors: string[]) => void
     disabled?: boolean
@@ -69,6 +70,7 @@ const YES_NO_OPTIONS = [
 export const KYCQuestionnaireForm: React.FC<KYCQuestionnaireFormProps> = ({
     reviewId,
     initialData,
+    initialExceptions = [],
     onDataChange,
     onValidationChange,
     disabled = false,
@@ -115,7 +117,7 @@ export const KYCQuestionnaireForm: React.FC<KYCQuestionnaireFormProps> = ({
 
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
     const [sourceOfFundsDocuments, setSourceOfFundsDocuments] = useState<Document[]>([])
-    const [selectedExceptions, setSelectedExceptions] = useState<SelectedException[]>([])
+    const [selectedExceptions, setSelectedExceptions] = useState<SelectedException[]>(initialExceptions)
 
 
 
@@ -741,6 +743,7 @@ export const KYCQuestionnaireForm: React.FC<KYCQuestionnaireFormProps> = ({
                         {/* Content */}
                         <Box sx={{ p: 4 }}>
                             <ExceptionSelector
+                                initialExceptions={selectedExceptions}
                                 onExceptionsChange={handleExceptionsChange}
                                 disabled={disabled || readOnly}
                             />

@@ -80,7 +80,7 @@ export interface Exception {
   review_id: number
   assigned_to: number | null
   created_by: number
-  type: 'DOCUMENTATION' | 'COMPLIANCE' | 'TECHNICAL' | 'REGULATORY' | 'OPERATIONAL' | 'OTHER'
+  type: 'DOCUMENTATION' | 'COMPLIANCE' | 'TECHNICAL' | 'REGULATORY' | 'OPERATIONAL' | 'OTHER' | 'kyc_non_compliance' | 'dormant_funded_ufaa' | 'dormant_overdrawn_exit'
   title: string
   description: string
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'

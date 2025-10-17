@@ -165,7 +165,7 @@ export const MyTasksPage: React.FC = () => {
                     page++
                 }
 
-                clientMap = new Map(allClients.map(client => [client.id, client.name]))
+                clientMap = new Map(allClients.map(client => [client.client_id, client.name]))
             } catch (clientError) {
                 console.warn('Failed to fetch clients for name mapping:', clientError)
                 // Continue without client names - will fall back to IDs
